@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage.tsx";
-import RegisterPage from "./pages/RegisterPage.tsx";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import HomePage from "./pages/HomePage.tsx";
+import HomePage from "./pages/HomePage";
 
 function App() {
   const queryClient = new QueryClient({

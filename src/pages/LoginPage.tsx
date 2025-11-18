@@ -1,8 +1,8 @@
 import axios from "axios";
-import AuthForm, { type AuthFormValues } from "../components/AuthForm.tsx";
+import AuthForm, { type AuthFormValues } from "../components/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { LoginResponse } from "../types/auth.types.ts";
+import { LoginResponse } from "../types/auth.types";
 
 const loginRequest = async (values: AuthFormValues): Promise<LoginResponse> => {
   const { email, password } = values;

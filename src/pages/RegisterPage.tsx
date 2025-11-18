@@ -1,8 +1,8 @@
 import axios from "axios";
-import AuthForm, { type AuthFormValues } from "../components/AuthForm.tsx";
+import AuthForm, { type AuthFormValues } from "../components/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { RegisterResponse } from "../types/auth.types.ts";
+import { RegisterResponse } from "../types/auth.types";
 
 const registerRequest = async (
   values: AuthFormValues
