@@ -3,6 +3,7 @@ import AuthForm, { type AuthFormValues } from "../components/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { LoginResponse } from "../types/auth.types";
+import type { JSX } from "react";
 
 const loginRequest = async (values: AuthFormValues): Promise<LoginResponse> => {
   const { email, password } = values;
@@ -13,7 +14,7 @@ const loginRequest = async (values: AuthFormValues): Promise<LoginResponse> => {
   return response.data;
 };
 
-function LoginPage() {
+function LoginPage(): JSX.Element {
   const navigate = useNavigate();
 
   const mutation = useMutation({

@@ -4,8 +4,9 @@ import RegisterPage from "./pages/RegisterPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import HomePage from "./pages/HomePage";
+import type { JSX } from "react";
 
-function App() {
+function App(): JSX.Element {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

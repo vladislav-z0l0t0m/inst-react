@@ -3,6 +3,7 @@ import AuthForm, { type AuthFormValues } from "../components/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { RegisterResponse } from "../types/auth.types";
+import type { JSX } from "react";
 
 const registerRequest = async (
   values: AuthFormValues
@@ -15,7 +16,7 @@ const registerRequest = async (
   return response.data;
 };
 
-function RegisterPage() {
+function RegisterPage(): JSX.Element {
   const navigate = useNavigate();
 
   const mutation = useMutation({
