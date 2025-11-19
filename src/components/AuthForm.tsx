@@ -14,26 +14,29 @@ interface AuthFormProps {
   onSubmit: (values: AuthFormValues) => void;
   title: string;
   buttonText: string;
-  showUsername?: boolean;
   footerText: string;
   footerLinkText: string;
   footerLinkTo: string;
+  showUsername?: boolean;
+  isLoading?: boolean;
 }
 
 function AuthForm({
   onSubmit,
   title,
   buttonText,
-  showUsername = false,
   footerText,
   footerLinkText,
   footerLinkTo,
+  showUsername = false,
+  isLoading = false,
 }: AuthFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
   } = useForm<AuthFormValues>({ mode: "onChange" });
+  const showLoader = isLoading || isSubmitting;
 
   return (
     <div className='min-h-screen bg-gray-100 flex items-center justify-center p-4'>
@@ -64,7 +67,7 @@ function AuthForm({
             placeholder='Password'
           />
 
-          <Button type='submit' isLoading={isSubmitting} disabled={!isValid}>
+          <Button type='submit' isLoading={showLoader} disabled={!isValid}>
             {buttonText}
           </Button>
         </form>
