@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FormInput } from "./ui/FormInput";
 import { Button } from "./ui/Button";
 import { formRules } from "../utils/validation";
+import { FormError } from "./FormError";
 
 export interface AuthFormValues {
   email: string;
@@ -19,6 +20,7 @@ interface AuthFormProps {
   footerLinkTo: string;
   showUsername?: boolean;
   isLoading?: boolean;
+  errorMessage?: string;
 }
 
 function AuthForm({
@@ -30,6 +32,7 @@ function AuthForm({
   footerLinkTo,
   showUsername = false,
   isLoading = false,
+  errorMessage,
 }: AuthFormProps) {
   const {
     register,
@@ -44,6 +47,9 @@ function AuthForm({
         <h2 className='text-blue-600 text-3xl font-bold text-center mb-6'>
           {title}
         </h2>
+
+        <FormError message={errorMessage} />
+
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
           {showUsername && (
             <FormInput
