@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Loader } from "./ui/Loader";
+import { FormInput } from "./ui/FormInput";
+import { Button } from "./ui/Button";
+import { formRules } from "../utils/validation";
 
 export interface AuthFormValues {
   email: string;
@@ -30,8 +32,8 @@ function AuthForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<AuthFormValues>({ mode: "onBlur" });
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<AuthFormValues>({ mode: "onChange" });
 
   return (
     <div className='min-h-screen bg-gray-100 flex items-center justify-center p-4'>
@@ -41,89 +43,30 @@ function AuthForm({
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
           {showUsername && (
-            <div>
-              <input
-                type='text'
-                placeholder='Username'
-                className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition duration-200'
-                {...register("username", {
-                  required: "Username is required",
-                  minLength: {
-                    value: 3,
-                    message: "Username must be at least 3 characters long",
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: "Username must be at most 30 characters long",
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z0-9_]+$/,
-                    message:
-                      "Username must contain only letters, numbers and underscores",
-                  },
-                })}
-              />
-              {errors.username && (
-                <p className='mt-1 text-sm text-red-600'>
-                  {errors.username.message}
-                </p>
-              )}
-            </div>
-          )}
-          <div>
-            <input
+            <FormInput
+              registration={register("username", formRules.username)}
+              error={errors.username}
               type='text'
-              placeholder='Email'
-              className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition duration-200'
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: "Invalid email address",
-                },
-              })}
+              placeholder='Username'
             />
-            {errors.email && (
-              <p className='mt-1 text-sm text-red-600'>
-                {errors.email.message}
-              </p>
-            )}
-          </div>
+          )}
+          <FormInput
+            registration={register("email", formRules.email)}
+            error={errors.email}
+            type='email'
+            placeholder='Email'
+          />
 
-          <div>
-            <input
-              type='password'
-              placeholder='Password'
-              className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition duration-200'
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters long",
-                },
-              })}
-            />
-            {errors.password && (
-              <p className='mt-1 text-sm text-red-600'>
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+          <FormInput
+            registration={register("password", formRules.password)}
+            error={errors.password}
+            type='password'
+            placeholder='Password'
+          />
 
-          <button
-            type='submit'
-            disabled={isSubmitting}
-            className='relative w-full flex items-center justify-center cursor-pointer bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200'
-          >
-            <span className={`${isSubmitting ? "opacity-0" : "opacity-100"}`}>
-              {buttonText}
-            </span>
-            {isSubmitting && (
-              <div className='absolute inset-0 flex items-center justify-center'>
-                <Loader />
-              </div>
-            )}
-          </button>
+          <Button type='submit' isLoading={isSubmitting} disabled={!isValid}>
+            {buttonText}
+          </Button>
         </form>
         <div className='mt-6 text-center'>
           <p className='text-gray-600'>
