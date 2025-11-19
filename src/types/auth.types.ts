@@ -1,20 +1,12 @@
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: number;
-    email: string;
-    username: string;
-    phone?: string;
-  };
-}
+export type User = {
+  id: number;
+  email: string;
+  username: string;
+  phone?: string;
+};
 
-export interface RegisterResponse {
+export type AuthResponse = {
   accessToken: string;
   refreshToken: string;
-  user: {
-    id: number;
-    email: string;
-    username: string;
-  };
-}
+  user: User;
+};
