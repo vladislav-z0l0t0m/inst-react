@@ -6,15 +6,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import HomePage from "./pages/HomePage";
 import type { JSX } from "react";
 
-function App(): JSX.Element {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
     },
-  });
+  },
+});
 
+function App(): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
