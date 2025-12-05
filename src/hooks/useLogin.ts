@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { AuthFormValues } from "../components/AuthForm";
 import { AuthResponse } from "../types/auth.types";
+import { LoginFormValues } from "../components/loginForm";
 import axios from "axios";
 
-const loginRequest = async (values: AuthFormValues): Promise<AuthResponse> => {
+const loginRequest = async (values: LoginFormValues): Promise<AuthResponse> => {
   const response = await axios.post(
     `${import.meta.env.VITE_AUTH_API_URL}/login`,
     {
