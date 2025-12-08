@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { AuthFormValues } from "../components/AuthForm";
 import { AuthResponse } from "../types/auth.types";
+import { LoginFormValues } from "../components/loginForm";
 import { authApi } from "../api/axiosInstance";
 
-const loginRequest = async (values: AuthFormValues): Promise<AuthResponse> => {
+const loginRequest = async (values: LoginFormValues): Promise<AuthResponse> => {
   const response = await authApi.post("/login", {
     identifier: values.email,
     identifierType: "email",
