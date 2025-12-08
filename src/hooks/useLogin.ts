@@ -2,17 +2,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { AuthFormValues } from "../components/AuthForm";
 import { AuthResponse } from "../types/auth.types";
-import axios from "axios";
+import { authApi } from "../api/axiosInstance";
 
 const loginRequest = async (values: AuthFormValues): Promise<AuthResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_AUTH_API_URL}/login`,
-    {
-      identifier: values.email,
-      identifierType: "email",
-      password: values.password,
-    }
-  );
+  const response = await authApi.post("/login", {
+    identifier: values.email,
+    identifierType: "email",
+    password: values.password,
+  });
   return response.data;
 };
 
@@ -21,10 +18,7 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: loginRequest,
-    onSuccess: (data) => {
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-
+    onSuccess: () => {
       navigate("/");
     },
     onError: (error) => {
