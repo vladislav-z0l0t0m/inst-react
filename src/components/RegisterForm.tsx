@@ -21,7 +21,7 @@ export const RegisterForm = (): JSX.Element => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<RegisterFormValues>({ mode: "onChange" });
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "common"]);
 
   return (
     <AuthLayout
@@ -29,7 +29,7 @@ export const RegisterForm = (): JSX.Element => {
       footerText={t("register.haveAccount")}
       footerLinkText={t("register.login")}
       footerLinkTo='/login'
-      errorMessage={getErrorMessage(error)}
+      errorMessage={getErrorMessage(error, t)}
     >
       <form
         onSubmit={handleSubmit((data) => registerMutation(data))}

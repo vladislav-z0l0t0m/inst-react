@@ -20,7 +20,7 @@ export const LoginForm = (): JSX.Element => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormValues>({ mode: "onChange" });
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "common"]);
 
   return (
     <AuthLayout
@@ -28,7 +28,7 @@ export const LoginForm = (): JSX.Element => {
       footerText={t("login.noAccount")}
       footerLinkText={t("login.registration")}
       footerLinkTo='/register'
-      errorMessage={getErrorMessage(error)}
+      errorMessage={getErrorMessage(error, t)}
     >
       <form
         onSubmit={handleSubmit((data) => loginMutation(data))}
