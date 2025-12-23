@@ -6,6 +6,7 @@ import { FormInput } from "./ui/FormInput";
 import { formRules } from "../utils/validation";
 import { Button } from "./ui/Button";
 import { AuthLayout } from "./AuthLayout";
+import { useTranslation } from "react-i18next";
 
 export interface LoginFormValues {
   email: string;
@@ -19,14 +20,15 @@ export const LoginForm = (): JSX.Element => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormValues>({ mode: "onChange" });
+  const { t } = useTranslation(["auth", "common"]);
 
   return (
     <AuthLayout
-      title='Login'
-      footerText='Нет аккаунта?'
-      footerLinkText='Регистрация'
+      title={t("login.title")}
+      footerText={t("login.noAccount")}
+      footerLinkText={t("login.registration")}
       footerLinkTo='/register'
-      errorMessage={getErrorMessage(error)}
+      errorMessage={getErrorMessage(error, t)}
     >
       <form
         onSubmit={handleSubmit((data) => loginMutation(data))}
@@ -36,18 +38,18 @@ export const LoginForm = (): JSX.Element => {
           registration={register("email", formRules.email)}
           error={errors.email}
           type='email'
-          placeholder='Email'
+          placeholder={t("common.email")}
         />
 
         <FormInput
           registration={register("password", formRules.password)}
           error={errors.password}
           type='password'
-          placeholder='Password'
+          placeholder={t("common.password")}
         />
 
         <Button type='submit' isLoading={isPending} disabled={!isValid}>
-          Login
+          {t("login.button")}
         </Button>
       </form>
     </AuthLayout>

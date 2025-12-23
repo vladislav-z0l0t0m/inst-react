@@ -1,18 +1,24 @@
 import { AxiosError } from "axios";
+import { TFunction } from "i18next";
 
-export const getErrorMessage = (error: unknown): string => {
-  if (!error) return "";
+export const getErrorMessage = (
+  error: unknown,
+  t: TFunction
+): string | null => {
+  if (!error) return null;
 
-  const axiosError = error as AxiosError<{ message: string | string[] }>;
+  if (error instanceof AxiosError) {
+    if (error.code === "ERR_NETWORK" || !error.response) {
+      return t("common:error.network");
+    }
 
-  if (axiosError.response?.data?.message) {
-    const message = axiosError.response.data.message;
-    return Array.isArray(message) ? message[0] ?? "" : message;
+    const message = error.response?.data?.message;
+    return Array.isArray(message) ? message[0] ?? null : message;
   }
 
   if (error instanceof Error) {
     return error.message;
   }
 
-  return "Unknown error";
+  return t("common:error.unknown");
 };
