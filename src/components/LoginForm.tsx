@@ -7,6 +7,7 @@ import { formRules } from "../utils/validation";
 import { Button } from "./ui/Button";
 import { AuthLayout } from "./AuthLayout";
 import { useTranslation } from "react-i18next";
+import { AppRoutes } from "../constants/appRoutes";
 
 export interface LoginFormValues {
   email: string;
@@ -27,7 +28,7 @@ export const LoginForm = (): JSX.Element => {
       title={t("login.title")}
       footerText={t("login.noAccount")}
       footerLinkText={t("login.registration")}
-      footerLinkTo='/register'
+      footerLinkTo={AppRoutes.REGISTER}
       errorMessage={getErrorMessage(error, t)}
     >
       <form

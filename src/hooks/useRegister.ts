@@ -1,20 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { AuthResponse } from "../types/auth.types";
+import { useNavigate } from "react-router-dom";
+import { authApi } from "../api/axiosInstance";
 import { RegisterFormValues } from "../components/RegisterForm";
-import axios from "axios";
+import { AppRoutes, ApiRoutes } from "../constants";
 
 const registerRequest = async (
   values: RegisterFormValues
 ): Promise<AuthResponse> => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_AUTH_API_URL}/register`,
-    {
-      username: values.username,
-      email: values.email,
-      password: values.password,
-    }
-  );
+  const response = await authApi.post(ApiRoutes.REGISTER, {
+    username: values.username,
+    email: values.email,
+    password: values.password,
+  });
 
   return response.data;
 };
@@ -24,10 +22,8 @@ export const useRegister = () => {
 
   return useMutation({
     mutationFn: registerRequest,
-    onSuccess: (data) => {
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-      navigate("/");
+    onSuccess: () => {
+      navigate(AppRoutes.PROFILE);
     },
     onError: (error) => {
       console.error("Register failed:", error);

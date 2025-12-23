@@ -7,6 +7,7 @@ import { Button } from "./ui/Button";
 import { AuthLayout } from "./AuthLayout";
 import { getErrorMessage } from "../utils/error";
 import { useTranslation } from "react-i18next";
+import { AppRoutes } from "../constants/appRoutes";
 
 export interface RegisterFormValues {
   username: string;
@@ -28,7 +29,7 @@ export const RegisterForm = (): JSX.Element => {
       title={t("register.title")}
       footerText={t("register.haveAccount")}
       footerLinkText={t("register.login")}
-      footerLinkTo='/login'
+      footerLinkTo={AppRoutes.LOGIN}
       errorMessage={getErrorMessage(error, t)}
     >
       <form
