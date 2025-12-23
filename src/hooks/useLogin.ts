@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { AuthResponse } from "../types/auth.types";
 import { LoginFormValues } from "../components/loginForm";
 import { authApi } from "../api/axiosInstance";
+import { AppRoutes, ApiRoutes } from "../constants";
 
 const loginRequest = async (values: LoginFormValues): Promise<AuthResponse> => {
-  const response = await authApi.post("/login", {
+  const response = await authApi.post(ApiRoutes.LOGIN, {
     identifier: values.email,
     identifierType: "email",
     password: values.password,
@@ -19,7 +20,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginRequest,
     onSuccess: () => {
-      navigate("/");
+      navigate(AppRoutes.HOME);
     },
     onError: (error) => {
       console.error("Login failed:", error);

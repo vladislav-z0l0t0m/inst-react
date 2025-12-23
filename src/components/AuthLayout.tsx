@@ -6,7 +6,7 @@ interface AuthLayoutProps {
   footerText: string;
   footerLinkText: string;
   footerLinkTo: string;
-  errorMessage?: string;
+  errorMessage?: string | null;
   children: React.ReactNode;
 }
 
