@@ -8,6 +8,7 @@ import { Button } from "./ui/Button";
 import { AuthLayout } from "./AuthLayout";
 import { useTranslation } from "react-i18next";
 import { AppRoutes } from "../constants/appRoutes";
+import { TestIds } from "../constants";
 
 export interface LoginFormValues {
   email: string;
@@ -40,6 +41,7 @@ export const LoginForm = (): JSX.Element => {
           error={errors.email}
           type='email'
           placeholder={t("common.email")}
+          data-testid={TestIds.LOGIN_EMAIL_INPUT}
         />
 
         <FormInput
@@ -47,9 +49,15 @@ export const LoginForm = (): JSX.Element => {
           error={errors.password}
           type='password'
           placeholder={t("common.password")}
+          data-testid={TestIds.LOGIN_PASSWORD_INPUT}
         />
 
-        <Button type='submit' isLoading={isPending} disabled={!isValid}>
+        <Button
+          type='submit'
+          isLoading={isPending}
+          disabled={!isValid}
+          data-testid={TestIds.LOGIN_SUBMIT_BUTTON}
+        >
           {t("login.button")}
         </Button>
       </form>

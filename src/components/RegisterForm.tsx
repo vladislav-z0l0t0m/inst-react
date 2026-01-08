@@ -8,6 +8,7 @@ import { AuthLayout } from "./AuthLayout";
 import { getErrorMessage } from "../utils/error";
 import { useTranslation } from "react-i18next";
 import { AppRoutes } from "../constants/appRoutes";
+import { TestIds } from "../constants";
 
 export interface RegisterFormValues {
   username: string;
@@ -41,6 +42,7 @@ export const RegisterForm = (): JSX.Element => {
           error={errors.username}
           type='text'
           placeholder={t("common.username")}
+          data-testid={TestIds.REGISTER_USERNAME_INPUT}
         />
 
         <FormInput
@@ -48,6 +50,7 @@ export const RegisterForm = (): JSX.Element => {
           error={errors.email}
           type='email'
           placeholder={t("common.email")}
+          data-testid={TestIds.REGISTER_EMAIL_INPUT}
         />
 
         <FormInput
@@ -55,9 +58,15 @@ export const RegisterForm = (): JSX.Element => {
           error={errors.password}
           type='password'
           placeholder={t("common.password")}
+          data-testid={TestIds.REGISTER_PASSWORD_INPUT}
         />
 
-        <Button type='submit' isLoading={isPending} disabled={!isValid}>
+        <Button
+          type='submit'
+          isLoading={isPending}
+          disabled={!isValid}
+          data-testid={TestIds.REGISTER_SUBMIT_BUTTON}
+        >
           {t("register.button")}
         </Button>
       </form>

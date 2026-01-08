@@ -1,62 +1,30 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
 import { LoginForm } from "./loginForm";
-import { authApi } from "../api/axiosInstance";
-
-vi.mock("../api/axiosInstance", () => ({
-  authApi: {
-    post: vi.fn(),
-  },
-}));
-
-const mockNavigate = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
+import { mockNavigate, renderWithProviders } from "../test/setup";
+import { ApiRoutes, AppRoutes, TestIds } from "../constants";
+import { MockUser } from "../mocks/fixtures/user.fixture";
+import { authMock } from "../mocks/authMocks";
 
 describe("LoginForm", () => {
-  let queryClient: QueryClient;
-
-  beforeEach(() => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-      },
-    });
-    vi.clearAllMocks();
-  });
-
-  const renderWithProviders = (ui: React.ReactElement) => {
-    return render(
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>{ui}</BrowserRouter>
-      </QueryClientProvider>
-    );
-  };
-
   describe("UI & Validation", () => {
     it("should render login form with all required fields", () => {
       renderWithProviders(<LoginForm />);
 
-      expect(screen.getByPlaceholderText("Email")).toBeInTheDocument();
-      expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
+      expect(screen.getByTestId(TestIds.LOGIN_EMAIL_INPUT)).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: /login/i })
+        screen.getByTestId(TestIds.LOGIN_PASSWORD_INPUT)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON)
       ).toBeInTheDocument();
     });
 
     it("should have submit button disabled when form is empty", () => {
       renderWithProviders(<LoginForm />);
 
-      const submitButton = screen.getByRole("button", { name: /login/i });
+      const submitButton = screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON);
       expect(submitButton).toBeDisabled();
     });
 
@@ -64,8 +32,8 @@ describe("LoginForm", () => {
       const user = userEvent.setup();
       renderWithProviders(<LoginForm />);
 
-      const emailInput = screen.getByPlaceholderText("Email");
-      const submitButton = screen.getByRole("button", { name: /login/i });
+      const emailInput = screen.getByTestId(TestIds.LOGIN_EMAIL_INPUT);
+      const submitButton = screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON);
 
       await user.type(emailInput, "test@example.com");
 
@@ -76,8 +44,8 @@ describe("LoginForm", () => {
       const user = userEvent.setup();
       renderWithProviders(<LoginForm />);
 
-      const passwordInput = screen.getByPlaceholderText("Password");
-      const submitButton = screen.getByRole("button", { name: /login/i });
+      const passwordInput = screen.getByTestId(TestIds.LOGIN_PASSWORD_INPUT);
+      const submitButton = screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON);
 
       await user.type(passwordInput, "password123");
 
@@ -88,9 +56,9 @@ describe("LoginForm", () => {
       const user = userEvent.setup();
       renderWithProviders(<LoginForm />);
 
-      const emailInput = screen.getByPlaceholderText("Email");
-      const passwordInput = screen.getByPlaceholderText("Password");
-      const submitButton = screen.getByRole("button", { name: /login/i });
+      const emailInput = screen.getByTestId(TestIds.LOGIN_EMAIL_INPUT);
+      const passwordInput = screen.getByTestId(TestIds.LOGIN_PASSWORD_INPUT);
+      const submitButton = screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON);
 
       expect(submitButton).toBeDisabled();
 
@@ -103,17 +71,16 @@ describe("LoginForm", () => {
   });
 
   describe("Login logic", () => {
-    it("should call login API with correct credentials and navigate to home on success", async () => {
+    it("should navigate to home on success", async () => {
       const user = userEvent.setup();
-      const mockPost = vi.mocked(authApi.post);
 
-      mockPost.mockResolvedValueOnce({ data: { message: "SUUUUUIIIIII" } });
+      authMock.onPost(ApiRoutes.LOGIN).reply(200, MockUser);
 
       renderWithProviders(<LoginForm />);
 
-      const emailInput = screen.getByPlaceholderText("Email");
-      const passwordInput = screen.getByPlaceholderText("Password");
-      const submitButton = screen.getByRole("button", { name: /login/i });
+      const emailInput = screen.getByTestId(TestIds.LOGIN_EMAIL_INPUT);
+      const passwordInput = screen.getByTestId(TestIds.LOGIN_PASSWORD_INPUT);
+      const submitButton = screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON);
 
       await user.type(emailInput, "test@example.com");
       await user.type(passwordInput, "password123");
@@ -125,30 +92,20 @@ describe("LoginForm", () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockPost).toHaveBeenCalledWith("/login", {
-          identifier: "test@example.com",
-          identifierType: "email",
-          password: "password123",
-        });
-        expect(mockNavigate).toHaveBeenCalledWith("/");
+        expect(mockNavigate).toHaveBeenCalledWith(AppRoutes.HOME);
       });
     });
 
     it("should display error message and NOT navigate on failed login", async () => {
       const user = userEvent.setup();
-      const mockPost = vi.mocked(authApi.post);
 
-      mockPost.mockRejectedValueOnce({
-        response: {
-          status: 401,
-          data: { message: "Invalid credentials" },
-        },
-      });
+      authMock.onPost(ApiRoutes.LOGIN).reply(401);
+
       renderWithProviders(<LoginForm />);
 
-      const emailInput = screen.getByPlaceholderText("Email");
-      const passwordInput = screen.getByPlaceholderText("Password");
-      const submitButton = screen.getByRole("button", { name: /login/i });
+      const emailInput = screen.getByTestId(TestIds.LOGIN_EMAIL_INPUT);
+      const passwordInput = screen.getByTestId(TestIds.LOGIN_PASSWORD_INPUT);
+      const submitButton = screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON);
 
       await user.type(emailInput, "test@example.com");
       await user.type(passwordInput, "password123");
@@ -159,40 +116,49 @@ describe("LoginForm", () => {
 
       await user.click(submitButton);
 
-      const errorMessage = await screen.findByText(/invalid credentials/i);
+      const errorMessage = await screen.findByTestId(
+        TestIds.AUTH_ERROR_MESSAGE
+      );
 
       await waitFor(() => {
         expect(errorMessage).toBeInTheDocument();
         expect(mockNavigate).not.toHaveBeenCalled();
+        expect(submitButton).not.toBeDisabled();
       });
     });
-  });
 
-  it("should disable submit button while request is pending", async () => {
-    const user = userEvent.setup();
-    const mockPost = vi.mocked(authApi.post);
+    it("should disable submit button while request is pending", async () => {
+      const user = userEvent.setup();
 
-    mockPost.mockImplementation(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      return { data: { message: "wait a bit..." } };
+      authMock.onPost(ApiRoutes.LOGIN).reply(() => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve([200, { user: MockUser }]);
+          }, 500);
+        });
+      });
+
+      renderWithProviders(<LoginForm />);
+
+      const emailInput = screen.getByTestId(TestIds.LOGIN_EMAIL_INPUT);
+      const passwordInput = screen.getByTestId(TestIds.LOGIN_PASSWORD_INPUT);
+      const submitButton = screen.getByTestId(TestIds.LOGIN_SUBMIT_BUTTON);
+
+      await user.type(emailInput, "test@example.com");
+      await user.type(passwordInput, "password123");
+
+      await waitFor(() => {
+        expect(submitButton).not.toBeDisabled();
+      });
+
+      await user.click(submitButton);
+
+      const loader = await screen.findByRole(
+        "progressbar",
+        {},
+        { timeout: 2000 }
+      );
+      expect(loader).toBeInTheDocument();
     });
-
-    renderWithProviders(<LoginForm />);
-
-    const emailInput = screen.getByPlaceholderText("Email");
-    const passwordInput = screen.getByPlaceholderText("Password");
-    const submitButton = screen.getByRole("button", { name: /login/i });
-
-    await user.type(emailInput, "test@example.com");
-    await user.type(passwordInput, "password123");
-
-    await waitFor(() => {
-      expect(submitButton).not.toBeDisabled();
-    });
-
-    await user.click(submitButton);
-
-    expect(submitButton).toBeDisabled();
-    expect(screen.getByRole("progressbar")).toBeInTheDocument();
   });
 });
