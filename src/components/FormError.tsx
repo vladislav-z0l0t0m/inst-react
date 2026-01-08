@@ -1,12 +1,17 @@
+import { TestIds } from "../constants";
+
 interface FormErrorProps {
-  message?: string;
+  message?: string | null;
 }
 
 export const FormError = ({ message }: FormErrorProps) => {
   if (!message) return null;
 
   return (
-    <div className='bg-red-100 border border-red-200 text-red-600 px-4 py-2 rounded-lg flex items-center gap-x-2 text-sm mb-6'>
+    <div
+      data-testid={TestIds.AUTH_ERROR_MESSAGE}
+      className='bg-red-100 border border-red-200 text-red-600 px-4 py-2 rounded-lg flex items-center gap-x-2 text-sm mb-6'
+    >
       <svg
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 24 24'
