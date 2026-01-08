@@ -9,6 +9,8 @@ export const Loader = ({ className = "w-5 h-5 text-white" }: LoaderProps) => {
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 24 24'
+      role='progressbar'
+      aria-label='Loading...'
     >
       <circle
         className='opacity-25'
