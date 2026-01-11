@@ -1,3 +1,4 @@
+import { config } from "../config";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -5,7 +6,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const authApi = axios.create({
-  baseURL: import.meta.env.VITE_AUTH_API_URL,
+  baseURL: config.authUrl,
   withCredentials: true,
 });
 
