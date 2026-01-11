@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FormError } from "./FormError";
+import { SocialAuth } from "./ui/SocialAuth";
 
 interface AuthLayoutProps {
   title: string;
@@ -39,6 +40,8 @@ export const AuthLayout = ({
               {footerLinkText}
             </Link>
           </p>
+
+          <SocialAuth />
         </div>
       </div>
     </div>
