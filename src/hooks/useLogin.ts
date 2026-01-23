@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { AuthResponse } from "../types/auth.types";
-import { LoginFormValues } from "../components/loginForm";
-import { authApi } from "../api/axiosInstance";
+import { LoginFormValues } from "../components/LoginForm";
+import { authApi } from "../api/authApi";
 import { AppRoutes, ApiRoutes } from "../constants";
+import { queryClient } from "../api/queryClient";
 
 const loginRequest = async (values: LoginFormValues): Promise<AuthResponse> => {
   const response = await authApi.post(ApiRoutes.LOGIN, {
@@ -20,6 +21,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginRequest,
     onSuccess: () => {
+      queryClient.resetQueries();
       navigate(AppRoutes.HOME);
     },
     onError: (error) => {

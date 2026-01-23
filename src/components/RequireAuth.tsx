@@ -1,12 +1,13 @@
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "../hooks/useUser";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Loader } from "./ui/Loader";
+import { AppRoutes } from "../constants";
 
 export const RequireAuth = () => {
-  const { user, isLoading, isError } = useUser();
+  const { isAuthenticated, isLoading } = useUser();
   const location = useLocation();
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <div className='flex justify-center items-center h-screen w-full'>
         <Loader />
@@ -14,8 +15,8 @@ export const RequireAuth = () => {
     );
   }
 
-  if (!user && !isError) {
-    return <Navigate to='/login' state={{ from: location }} replace />;
+  if (!isLoading && !isAuthenticated) {
+    return <Navigate to={AppRoutes.LOGIN} state={{ from: location }} replace />;
   }
 
   return <Outlet />;

@@ -1,0 +1,18 @@
+{
+  "ago": {
+    "second": "{{count}} с",
+    "seconds": "{{count}}с",
+    "minute": "{{count}} м",
+    "minutes": "{{count}} м",
+    "hour": "{{count}} ч",
+    "hours": "{{count}} ч",
+    "day": "{{count}} д",
+    "days": "{{count}} д",
+    "week": "{{count}} нед",
+    "weeks": "{{count}} нед",
+    "month": "{{count}} мес",
+    "months": "{{count}} мес",
+    "year": "{{count}} г",
+    "years": "{{count}} г"
+  }
+}

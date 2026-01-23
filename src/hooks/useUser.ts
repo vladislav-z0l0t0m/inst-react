@@ -1,9 +1,9 @@
-import { User } from "@/types/auth.types";
-import { authApi } from "@/api/axiosInstance";
+import { User } from "../types/auth.types";
+import { baseApi } from "../api/baseApi";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchUser = async (): Promise<User> => {
-  const { data } = await authApi.get<User>("/user/me");
+  const { data } = await baseApi.get<User>("/user/me");
 
   return data;
 };

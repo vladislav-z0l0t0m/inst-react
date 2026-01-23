@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { AuthResponse } from "../types/auth.types";
 import { useNavigate } from "react-router-dom";
-import { authApi } from "../api/axiosInstance";
+import { authApi } from "../api/authApi";
 import { RegisterFormValues } from "../components/RegisterForm";
 import { AppRoutes, ApiRoutes } from "../constants";
+import { queryClient } from "../api/queryClient";
 
 const registerRequest = async (
   values: RegisterFormValues
@@ -23,6 +24,7 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: registerRequest,
     onSuccess: () => {
+      queryClient.resetQueries();
       navigate(AppRoutes.PROFILE);
     },
     onError: (error) => {

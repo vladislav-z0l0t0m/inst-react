@@ -1,4 +1,7 @@
 {
+  "common": {
+    "subscribe": "Subscribe"
+  },
   "error": {
     "unknown": "Unknown error",
     "network": "Network error"

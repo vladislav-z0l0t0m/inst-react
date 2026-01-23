@@ -1,4 +1,4 @@
-import { authApi } from "../api/axiosInstance";
+import { authApi } from "../api/authApi";
 import MockAdapter from "axios-mock-adapter";
 import { MockUser } from "./fixtures/user.fixture";
 import { ApiRoutes } from "../constants";

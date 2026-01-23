@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { LoginForm } from "./loginForm";
+import { LoginForm } from "./LoginForm";
 import { mockNavigate, renderWithProviders } from "../test/setup";
 import { ApiRoutes, AppRoutes, TestIds } from "../constants";
 import { MockUser } from "../mocks/fixtures/user.fixture";
