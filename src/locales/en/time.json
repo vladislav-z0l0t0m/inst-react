@@ -1,0 +1,18 @@
+{
+  "ago": {
+    "second": "{{count}} s",
+    "seconds": "{{count}} s",
+    "minute": "{{count}} m",
+    "minutes": "{{count}} m",
+    "hour": "{{count}} h",
+    "hours": "{{count}} h",
+    "day": "{{count}} d",
+    "days": "{{count}} d",
+    "week": "{{count}} w",
+    "weeks": "{{count}} w",
+    "month": "{{count}} mo",
+    "months": "{{count}} mo",
+    "year": "{{count}} y",
+    "years": "{{count}} y"
+  }
+}
